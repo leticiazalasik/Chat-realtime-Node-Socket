@@ -8,4 +8,8 @@ O objetivo principalé criar um chat onde duas abas do navegador diferentes pode
 
 Vscode - HTML, CSS, JavaScript, Node, Socket.io
 
+⏯️Para testar é necessário: rodar o servidor com node server.js,  acessar http://localhost:3000/ colocar um nome de usuário, digitar uma mensagem e enviar. 
+
+
+
 Tutorial base: https://www.youtube.com/watch?v=-jXfKDYJJvo
