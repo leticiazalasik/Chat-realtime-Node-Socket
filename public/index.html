@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat da Rocketseat</title>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.map"></script>
+    <!-- Incluindo a versão correta do jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.min.js"></script>
 
     <link rel="stylesheet" href="style.css">
@@ -20,13 +21,40 @@
     </form>
     
     <script type="text/javascript">
-        // Conexão com o servidor
         var socket = io('http://localhost:3000');
 
-        // Escutando o evento 'welcome' do servidor
-        socket.on('welcome', function(message) {
-            console.log(message);  // Exibe a mensagem no console do navegador
+        function renderMessage(message) {  
+            $('.messages').append('<div class="message"><strong>' + message.author + '</strong>: ' + message.message + '</div>');  
+        }
+
+        socket.on('previousMessage', function(messages) {  
+            for (var message of messages) {
+                renderMessage(message);
+            }
+        });
+
+        socket.on('receivedMessage', function(message) {
+            renderMessage(message);
+        });
+
+        $('#chat').submit(function(event) {
+            event.preventDefault();
+
+            var author = $('input[name=username]').val();
+            var message = $('input[name=message]').val();
+
+            if (author.length && message.length) {  
+                var messageObject = {
+                    author: author, 
+                    message: message, 
+                };
+
+                renderMessage(messageObject);
+
+                socket.emit('sendMessage', messageObject);
+            }
         });
     </script>
+
 </body>
 </html>
